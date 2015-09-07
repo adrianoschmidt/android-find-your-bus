@@ -16,12 +16,12 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.localhost8080.findyourbus.dto.BusDTO;
-import br.com.localhost8080.findyourbus.dto.BusListDTO;
+import br.com.localhost8080.findyourbus.dto.BusDepartureDTO;
+import br.com.localhost8080.findyourbus.dto.BusDepartureListDTO;
 
-public class BusListService extends AsyncTask<String, Void, List> {
+public class BusDepartureListService extends AsyncTask<String, Void, List> {
 
-    private String urlString = "https://api.appglu.com/v1/queries/findRoutesByStopName/run";
+    private String urlString = "https://api.appglu.com/v1/queries/findDeparturesByRouteId/run";
     /**
      * Username:Password encoded in Base64 (https://www.base64encode.org/)
      */
@@ -38,17 +38,13 @@ public class BusListService extends AsyncTask<String, Void, List> {
 
     @Override
     protected List doInBackground(String... params) {
-        if (params.length > 0) {
-            return this.doPost(params[0]);
-        } else {
-            return this.doPost("");
-        }
+        return this.doPost(params[0]);
     }
 
-    public List<BusDTO> doPost(String param) {
-        String body = "{\"params\": {\"stopName\": \"%" + param + "%\"}}";
+    public List<BusDepartureDTO> doPost(String param) {
+        String body = "{\"params\": {\"routeId\":" + param + "}}";
 
-        List<BusDTO> values = new ArrayList<BusDTO>();
+        List<BusDepartureDTO> values = new ArrayList<BusDepartureDTO>();
 
         HttpURLConnection conn = null;
         URL url = null;
@@ -72,9 +68,9 @@ public class BusListService extends AsyncTask<String, Void, List> {
 
             String jsonReturn = br.readLine();
 
-            BusListDTO busListDTO = new ObjectMapper().readValue(jsonReturn, BusListDTO.class);
+            BusDepartureListDTO busDepartureListDTO = new ObjectMapper().readValue(jsonReturn, BusDepartureListDTO.class);
 
-            values.addAll(busListDTO.getRows());
+            values.addAll(busDepartureListDTO.getRows());
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

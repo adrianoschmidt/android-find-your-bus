@@ -18,10 +18,12 @@ import java.util.List;
 
 import br.com.localhost8080.findyourbus.dto.BusDTO;
 import br.com.localhost8080.findyourbus.dto.BusListDTO;
+import br.com.localhost8080.findyourbus.dto.BusStopDTO;
+import br.com.localhost8080.findyourbus.dto.BusStopListDTO;
 
-public class BusListService extends AsyncTask<String, Void, List> {
+public class BusStopListService extends AsyncTask<String, Void, List> {
 
-    private String urlString = "https://api.appglu.com/v1/queries/findRoutesByStopName/run";
+    private String urlString = "https://api.appglu.com/v1/queries/findStopsByRouteId/run";
     /**
      * Username:Password encoded in Base64 (https://www.base64encode.org/)
      */
@@ -38,17 +40,13 @@ public class BusListService extends AsyncTask<String, Void, List> {
 
     @Override
     protected List doInBackground(String... params) {
-        if (params.length > 0) {
-            return this.doPost(params[0]);
-        } else {
-            return this.doPost("");
-        }
+        return this.doPost(params[0]);
     }
 
-    public List<BusDTO> doPost(String param) {
-        String body = "{\"params\": {\"stopName\": \"%" + param + "%\"}}";
+    public List<BusStopDTO> doPost(String param) {
+        String body = "{\"params\": {\"routeId\":" + param + "}}";
 
-        List<BusDTO> values = new ArrayList<BusDTO>();
+        List<BusStopDTO> values = new ArrayList<BusStopDTO>();
 
         HttpURLConnection conn = null;
         URL url = null;
@@ -72,9 +70,9 @@ public class BusListService extends AsyncTask<String, Void, List> {
 
             String jsonReturn = br.readLine();
 
-            BusListDTO busListDTO = new ObjectMapper().readValue(jsonReturn, BusListDTO.class);
+            BusStopListDTO busStopListDTO = new ObjectMapper().readValue(jsonReturn, BusStopListDTO.class);
 
-            values.addAll(busListDTO.getRows());
+            values.addAll(busStopListDTO.getRows());
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

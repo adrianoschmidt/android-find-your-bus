@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -14,13 +15,16 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.localhost8080.findyourbus.R;
-import br.com.localhost8080.findyourbus.listener.BusListListener;
+import br.com.localhost8080.findyourbus.dto.BusDTO;
 import br.com.localhost8080.findyourbus.service.BusListService;
 
 public class BusActivity extends AppCompatActivity {
 
-    private List<String> busList;
-    private ArrayAdapter<String> busListAdapter;
+    public final static String BUS_ID = "br.com.localhost8080.findyourbus.BUS_ID";
+    public final static String BUS_DESCRIPTION = "br.com.localhost8080.findyourbus.BUS_DESCRIPTION";
+
+    private List<BusDTO> busList;
+    private ArrayAdapter<BusDTO> busListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +35,7 @@ public class BusActivity extends AppCompatActivity {
     }
 
     private void initializeListView() {
-        ListView listView = (ListView) findViewById(R.id.list);
+        ListView listView = (ListView) findViewById(R.id.list_bus);
 
         try {
             this.busList = new BusListService().execute().get();
@@ -41,9 +45,22 @@ public class BusActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        this.busListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, busList);
+        this.busListAdapter = new ArrayAdapter<BusDTO>(this, android.R.layout.simple_list_item_1, android.R.id.text1, busList);
         listView.setAdapter(busListAdapter);
-        listView.setOnItemClickListener(new BusListListener());
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                BusDTO busDTO = (BusDTO) ((ListView) parent).getItemAtPosition(position);
+                System.out.println(busDTO);
+                System.out.println(busDTO.getId());
+
+                Intent intent = new Intent(getActivityInstanceForIntents(), BusDetailActivity.class);
+                intent.putExtra(BUS_ID, busDTO.getId());
+                intent.putExtra(BUS_DESCRIPTION, busDTO.toString());
+                startActivity(intent);
+            }
+        });
     }
 
     private void updateListView(String param) {
@@ -85,6 +102,14 @@ public class BusActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Workaround to pass the instance of Activity to the Intent
+     * TODO: find a better way to get the instance or use another way to create the Intent
+     */
+    private BusActivity getActivityInstanceForIntents() {
+        return this;
     }
 }
 

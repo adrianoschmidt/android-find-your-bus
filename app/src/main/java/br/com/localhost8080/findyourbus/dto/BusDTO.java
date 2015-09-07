@@ -47,4 +47,9 @@ public class BusDTO {
     public void setAgencyId(String agencyId) {
         this.agencyId = agencyId;
     }
+
+    @Override
+    public String toString() {
+        return this.getShortName() + " - " + this.getLongName();
+    }
 }
