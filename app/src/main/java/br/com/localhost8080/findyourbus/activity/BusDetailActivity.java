@@ -6,21 +6,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
 import br.com.localhost8080.findyourbus.R;
-import br.com.localhost8080.findyourbus.dto.BusDTO;
-import br.com.localhost8080.findyourbus.dto.BusDepartureDTO;
-import br.com.localhost8080.findyourbus.dto.BusStopDTO;
-import br.com.localhost8080.findyourbus.service.BusDepartureListService;
-import br.com.localhost8080.findyourbus.service.BusListService;
-import br.com.localhost8080.findyourbus.service.BusStopListService;
 
 public class BusDetailActivity extends AppCompatActivity {
 
@@ -54,7 +42,7 @@ public class BusDetailActivity extends AppCompatActivity {
         Long busId = getIntent().getLongExtra(BusActivity.BUS_ID, 0L);
         String busDescription = getIntent().getStringExtra(BusActivity.BUS_DESCRIPTION);
 
-        Intent intent = new Intent(this, BusStopListActivity.class);
+        Intent intent = new Intent(this, BusStopActivity.class);
         intent.putExtra(BusActivity.BUS_ID, busId);
         intent.putExtra(BusActivity.BUS_DESCRIPTION, busDescription);
         startActivity(intent);

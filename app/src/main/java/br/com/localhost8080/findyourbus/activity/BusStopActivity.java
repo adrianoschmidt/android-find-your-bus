@@ -15,7 +15,7 @@ import br.com.localhost8080.findyourbus.R;
 import br.com.localhost8080.findyourbus.dto.BusStopDTO;
 import br.com.localhost8080.findyourbus.service.BusStopListService;
 
-public class BusStopListActivity extends AppCompatActivity {
+public class BusStopActivity extends AppCompatActivity {
 
     private List<BusStopDTO> busStopList;
     private ArrayAdapter<BusStopDTO> busStopListAdapter;
