@@ -1,11 +1,13 @@
 package br.com.localhost8080.findyourbus.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.List;
@@ -17,36 +19,50 @@ import br.com.localhost8080.findyourbus.service.BusListService;
 
 public class BusActivity extends AppCompatActivity {
 
-    private BusListService service = new BusListService();
+    private List<String> busList;
+    private ArrayAdapter<String> busListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bus);
 
+        initializeListView();
+    }
+
+    private void initializeListView() {
         ListView listView = (ListView) findViewById(R.id.list);
 
-        List<String> values = null;
         try {
-            values = service.execute().get();
+            this.busList = new BusListService().execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
-        listView.setAdapter(adapter);
+        this.busListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, busList);
+        listView.setAdapter(busListAdapter);
         listView.setOnItemClickListener(new BusListListener());
+    }
+
+    private void updateListView(String param) {
+        try {
+            this.busList.clear();
+            this.busList.addAll(new BusListService().execute(param).get());
+            this.busListAdapter.notifyDataSetChanged();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
 
     public void search(View view) {
-//        Intent intent = new Intent(this, DisplayMessageActivity.class);
-//        EditText editText = (EditText) findViewById(R.id.edit_message);
-//        String message = editText.getText().toString();
-//        intent.putExtra(EXTRA_MESSAGE, message);
-//        startActivity(intent);
+        EditText editSearch = (EditText) findViewById(R.id.edit_search);
+        String param = editSearch.getText().toString();
+        this.updateListView(param);
     }
 
     @Override

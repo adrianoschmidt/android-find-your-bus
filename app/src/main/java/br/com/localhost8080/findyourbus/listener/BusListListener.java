@@ -20,6 +20,12 @@ public class BusListListener implements AdapterView.OnItemClickListener {
 //                "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
 //                .show();
 
+//        Intent intent = new Intent(this, BusDetailActivity.class);
+//        EditText editSearch = (EditText) findViewById(R.id.edit_search);
+//        String param = editSearch.getText().toString();
+//        intent.putExtra(EXTRA_MESSAGE, message);
+//        startActivity(intent);
+
     }
 
 

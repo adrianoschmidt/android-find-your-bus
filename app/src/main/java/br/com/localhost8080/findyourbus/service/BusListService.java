@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,13 +30,24 @@ public class BusListService extends AsyncTask<String, Void, List> {
     private String param1key = "X-AppGlu-Environment";
     private String param1value = "staging";
 
+    private String param2key = "Accept";
+    private String param2value = "application/json";
+
+    private String param3key = "Content-Type";
+    private String param3value = "application/json";
+
     @Override
     protected List doInBackground(String... params) {
-        List<String> values = this.doPost();
-        return values;
+        if (params.length > 0) {
+            return this.doPost(params[0]);
+        } else {
+            return this.doPost("");
+        }
     }
 
-    public List<String> doPost() {
+    public List<String> doPost(String param) {
+        String body = "{\"params\": {\"stopName\": \"%" + param + "%\"}}";
+
         List<String> values = new ArrayList<String>();
 
         HttpURLConnection conn = null;
@@ -45,17 +57,22 @@ public class BusListService extends AsyncTask<String, Void, List> {
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Authorization", "Basic " + authEncoded);
             conn.setRequestProperty(param1key, param1value);
+            conn.setRequestProperty(param2key, param2value);
+            conn.setRequestProperty(param3key, param3value);
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestProperty("Content-Type", "application/json");
+
+            conn.setDoOutput(true);
+            PrintWriter out = new PrintWriter(conn.getOutputStream());
+            out.print(body);
+            out.close();
 
             InputStream inputStream = conn.getInputStream();
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
             BufferedReader br = new BufferedReader(inputStreamReader);
 
-            String retornoRest = br.readLine();
+            String jsonReturn = br.readLine();
 
-            BusListDTO busListDTO = new ObjectMapper().readValue(retornoRest, BusListDTO.class);
+            BusListDTO busListDTO = new ObjectMapper().readValue(jsonReturn, BusListDTO.class);
 
             for (BusDTO bus : busListDTO.getRows()) {
                 values.add(bus.getShortName() + " - " + bus.getLongName());
