@@ -21,6 +21,9 @@ import br.com.localhost8080.findyourbus.dto.BusListDTO;
 public class BusListService extends AsyncTask<String, Void, List> {
 
     private String urlString = "https://api.appglu.com/v1/queries/findRoutesByStopName/run";
+    /**
+     * Username:Password encoded in Base64 (https://www.base64encode.org/)
+     */
     private String authEncoded = "V0tENE43WU1BMXVpTThWOkR0ZFR0ek1MUWxBMGhrMkMxWWk1cEx5VklsQVE2OA==";
 
     private String param1key = "X-AppGlu-Environment";
