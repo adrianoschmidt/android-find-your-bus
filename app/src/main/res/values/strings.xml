@@ -4,4 +4,8 @@
     <string name="street">Type a street</string>
     <string name="button_search">Search</string>
     <string name="title_activity_bus_detail">Bus Detail</string>
+    <string name="title_activity_bus_stop_list">Bus Stop List</string>
+    <string name="title_activity_bus_departure">Bus Departure List</string>
+    <string name="button_go_to_departures">Departures</string>
+    <string name="button_go_to_stops">Stops</string>
 </resources>

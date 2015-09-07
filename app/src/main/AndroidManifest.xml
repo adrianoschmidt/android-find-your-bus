@@ -27,6 +27,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.localhost8080.findyourbus.activity.BusActivity" />
         </activity>
+        <activity
+            android:name=".activity.BusStopListActivity"
+            android:label="@string/title_activity_bus_stop_list"
+            android:parentActivityName=".activity.BusDetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.localhost8080.findyourbus.activity.BusDetailActivity" />
+        </activity>
+        <activity
+            android:name=".activity.BusDepartureActivity"
+            android:label="@string/title_activity_bus_departure"
+            android:parentActivityName=".activity.BusDetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.localhost8080.findyourbus.activity.BusDetailActivity" />
+        </activity>
     </application>
 
 </manifest>

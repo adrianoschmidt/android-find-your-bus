@@ -1,13 +1,10 @@
 package br.com.localhost8080.findyourbus.activity;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,21 +12,21 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.localhost8080.findyourbus.R;
-import br.com.localhost8080.findyourbus.dto.BusDTO;
 import br.com.localhost8080.findyourbus.dto.BusDepartureDTO;
-import br.com.localhost8080.findyourbus.dto.BusStopDTO;
 import br.com.localhost8080.findyourbus.service.BusDepartureListService;
-import br.com.localhost8080.findyourbus.service.BusListService;
-import br.com.localhost8080.findyourbus.service.BusStopListService;
 
-public class BusDetailActivity extends AppCompatActivity {
+public class BusDepartureActivity extends AppCompatActivity {
+
+    private List<BusDepartureDTO> busDepartureList;
+    private ArrayAdapter<BusDepartureDTO> busDepartureListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bus_detail);
+        setContentView(R.layout.activity_bus_departure);
 
         initializeBusDescription();
+        initializeDepartureListView();
     }
 
     private void initializeBusDescription() {
@@ -40,24 +37,21 @@ public class BusDetailActivity extends AppCompatActivity {
     }
 
 
-    public void goToDepartures(View view) {
+    private void initializeDepartureListView() {
         Long busId = getIntent().getLongExtra(BusActivity.BUS_ID, 0L);
-        String busDescription = getIntent().getStringExtra(BusActivity.BUS_DESCRIPTION);
 
-        Intent intent = new Intent(this, BusDepartureActivity.class);
-        intent.putExtra(BusActivity.BUS_ID, busId);
-        intent.putExtra(BusActivity.BUS_DESCRIPTION, busDescription);
-        startActivity(intent);
-    }
+        ListView listView = (ListView) findViewById(R.id.list_bus_departure);
 
-    public void goToStops(View view) {
-        Long busId = getIntent().getLongExtra(BusActivity.BUS_ID, 0L);
-        String busDescription = getIntent().getStringExtra(BusActivity.BUS_DESCRIPTION);
+        try {
+            this.busDepartureList = new BusDepartureListService().execute(busId.toString()).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
-        Intent intent = new Intent(this, BusStopListActivity.class);
-        intent.putExtra(BusActivity.BUS_ID, busId);
-        intent.putExtra(BusActivity.BUS_DESCRIPTION, busDescription);
-        startActivity(intent);
+        this.busDepartureListAdapter = new ArrayAdapter<BusDepartureDTO>(this, android.R.layout.simple_list_item_1, android.R.id.text1, busDepartureList);
+        listView.setAdapter(busDepartureListAdapter);
     }
 
     @Override
