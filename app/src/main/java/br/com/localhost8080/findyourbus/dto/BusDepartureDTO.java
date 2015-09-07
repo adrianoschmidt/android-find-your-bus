@@ -1,9 +1,9 @@
 package br.com.localhost8080.findyourbus.dto;
 
-public class BusDepartureDTO {
+public class BusDepartureDTO implements Comparable<BusDepartureDTO> {
 
     private Long id;
-    private String calendar;
+    private BusDepartureCalendarEnum calendar;
     private String time;
 
     public Long getId() {
@@ -14,12 +14,12 @@ public class BusDepartureDTO {
         this.id = id;
     }
 
-    public String getCalendar() {
+    public BusDepartureCalendarEnum getCalendar() {
         return calendar;
     }
 
     public void setCalendar(String calendar) {
-        this.calendar = calendar;
+        this.calendar = BusDepartureCalendarEnum.valueOf(calendar);
     }
 
     public String getTime() {
@@ -32,6 +32,14 @@ public class BusDepartureDTO {
 
     @Override
     public String toString() {
-        return this.getTime();
+        return this.getCalendar() + " - " + this.getTime();
+    }
+
+    /**
+     * TODO: implement to compare by calendar and after by time.
+     */
+    @Override
+    public int compareTo(BusDepartureDTO another) {
+        return 0;
     }
 }

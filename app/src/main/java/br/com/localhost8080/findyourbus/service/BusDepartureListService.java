@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.com.localhost8080.findyourbus.dto.BusDepartureDTO;
@@ -28,6 +29,7 @@ public class BusDepartureListService extends AsyncTask<String, Void, List> {
         try {
             BusDepartureListDTO busDepartureListDTO = new ObjectMapper().readValue(jsonReturn, BusDepartureListDTO.class);
             values.addAll(busDepartureListDTO.getRows());
+            Collections.sort(values);
         } catch (IOException e) {
             e.printStackTrace();
         }
