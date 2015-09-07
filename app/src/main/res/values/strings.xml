@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Find Your Bus</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="street">street</string>
+    <string name="button_search">Search</string>
+
+</resources>
