@@ -29,7 +29,6 @@ public class BusDepartureTask extends AsyncTask<String, Void, List> {
         try {
             BusDepartureListDTO busDepartureListDTO = new ObjectMapper().readValue(jsonReturn, BusDepartureListDTO.class);
             values.addAll(busDepartureListDTO.getRows());
-            Collections.sort(values);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -8,10 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.localhost8080.findyourbus.R;
+import br.com.localhost8080.findyourbus.dto.BusDepartureCalendarEnum;
 import br.com.localhost8080.findyourbus.dto.BusDepartureDTO;
 import br.com.localhost8080.findyourbus.task.BusDepartureTask;
 
@@ -47,7 +51,10 @@ public class DepartureListFragment extends Fragment {
         return view;
     }
 
-
+    /**
+     * This method calls the rest service and filters the list every time that a tab is selected
+     * TODO: change it to call the rest service once time
+     */
     private void initializeDepartureListView(View view) {
         Long busId = this.getActivity().getIntent().getLongExtra(BusActivity.BUS_ID, 0L);
 
@@ -59,6 +66,14 @@ public class DepartureListFragment extends Fragment {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
+        }
+
+        BusDepartureCalendarEnum filter = BusDepartureCalendarEnum.values()[mPage-1];
+        Iterator<BusDepartureDTO> i = this.busDepartureList.iterator();
+        while (i.hasNext()) {
+            if (i.next().getCalendar() != filter) {
+                i.remove();
+            }
         }
 
         this.busDepartureListAdapter = new ArrayAdapter<BusDepartureDTO>(this.getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, busDepartureList);

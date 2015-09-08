@@ -2,7 +2,7 @@ package br.com.localhost8080.findyourbus.dto;
 
 import java.io.Serializable;
 
-public class BusDepartureDTO implements Comparable<BusDepartureDTO>, Serializable {
+public class BusDepartureDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,14 +36,7 @@ public class BusDepartureDTO implements Comparable<BusDepartureDTO>, Serializabl
 
     @Override
     public String toString() {
-        return this.getCalendar() + " - " + this.getTime();
+        return this.getTime();
     }
 
-    /**
-     * TODO: implement to compare by calendar and after by time.
-     */
-    @Override
-    public int compareTo(BusDepartureDTO another) {
-        return 0;
-    }
 }
