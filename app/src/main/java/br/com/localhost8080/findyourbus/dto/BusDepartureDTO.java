@@ -1,6 +1,10 @@
 package br.com.localhost8080.findyourbus.dto;
 
-public class BusDepartureDTO implements Comparable<BusDepartureDTO> {
+import java.io.Serializable;
+
+public class BusDepartureDTO implements Comparable<BusDepartureDTO>, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id;
     private BusDepartureCalendarEnum calendar;

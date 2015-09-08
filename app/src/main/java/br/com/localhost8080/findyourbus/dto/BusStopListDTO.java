@@ -1,8 +1,11 @@
 package br.com.localhost8080.findyourbus.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class BusStopListDTO {
+public class BusStopListDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private List<BusStopDTO> rows;
     private String rowsAffected;

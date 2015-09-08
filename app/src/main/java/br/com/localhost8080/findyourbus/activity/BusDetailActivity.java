@@ -1,10 +1,8 @@
 package br.com.localhost8080.findyourbus.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,44 +27,21 @@ public class BusDetailActivity extends AppCompatActivity {
 
 
     public void goToDepartures(View view) {
-        Long busId = getIntent().getLongExtra(BusActivity.BUS_ID, 0L);
-        String busDescription = getIntent().getStringExtra(BusActivity.BUS_DESCRIPTION);
-
-        Intent intent = new Intent(this, BusDepartureActivity.class);
-        intent.putExtra(BusActivity.BUS_ID, busId);
-        intent.putExtra(BusActivity.BUS_DESCRIPTION, busDescription);
-        startActivity(intent);
+        this.goTo(BusDepartureActivity.class);
     }
 
     public void goToStops(View view) {
+        this.goTo(BusStopActivity.class);
+    }
+
+    public void goTo(Class activityClass) {
         Long busId = getIntent().getLongExtra(BusActivity.BUS_ID, 0L);
         String busDescription = getIntent().getStringExtra(BusActivity.BUS_DESCRIPTION);
 
-        Intent intent = new Intent(this, BusStopActivity.class);
+        Intent intent = new Intent(this, activityClass);
         intent.putExtra(BusActivity.BUS_ID, busId);
         intent.putExtra(BusActivity.BUS_DESCRIPTION, busDescription);
         startActivity(intent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

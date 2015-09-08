@@ -1,4 +1,4 @@
-package br.com.localhost8080.findyourbus.service;
+package br.com.localhost8080.findyourbus.task;
 
 import android.os.AsyncTask;
 
@@ -13,7 +13,7 @@ import br.com.localhost8080.findyourbus.dto.BusDepartureDTO;
 import br.com.localhost8080.findyourbus.dto.BusDepartureListDTO;
 import br.com.localhost8080.findyourbus.rest.BusQueriesRestClient;
 
-public class BusDepartureListService extends AsyncTask<String, Void, List> {
+public class BusDepartureTask extends AsyncTask<String, Void, List> {
 
     private BusQueriesRestClient restClient = new BusQueriesRestClient();
     private String urlString = "https://api.appglu.com/v1/queries/findDeparturesByRouteId/run";

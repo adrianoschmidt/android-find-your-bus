@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 
 /**
  * Class to call the Rest Services.
+ * TODO: The work here is manual, it should be changed by a lib like android-annotations, spring, etc.
  */
 public class BusQueriesRestClient {
 
@@ -19,6 +20,9 @@ public class BusQueriesRestClient {
      * Username:Password encoded in Base64 (https://www.base64encode.org/)
      */
     private String authEncoded = "V0tENE43WU1BMXVpTThWOkR0ZFR0ek1MUWxBMGhrMkMxWWk1cEx5VklsQVE2OA==";
+
+    private String paramAuthKey = "Authorization";
+    private String paramAuthValue = "Basic " + authEncoded;
 
     private String param1key = "X-AppGlu-Environment";
     private String param1value = "staging";
@@ -29,16 +33,20 @@ public class BusQueriesRestClient {
     private String param3key = "Content-Type";
     private String param3value = "application/json";
 
+    private String requestMethod = "POST";
+
+    private Charset charset = Charset.forName("UTF-8");
+
     public String doPost(String urlString, String body) {
         HttpURLConnection conn = null;
         try {
             URL url = new URL(urlString);
             conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("Authorization", "Basic " + authEncoded);
+            conn.setRequestProperty(paramAuthKey, paramAuthValue);
             conn.setRequestProperty(param1key, param1value);
             conn.setRequestProperty(param2key, param2value);
             conn.setRequestProperty(param3key, param3value);
-            conn.setRequestMethod("POST");
+            conn.setRequestMethod(requestMethod);
 
             conn.setDoOutput(true);
             PrintWriter out = new PrintWriter(conn.getOutputStream());
@@ -46,7 +54,7 @@ public class BusQueriesRestClient {
             out.close();
 
             InputStream inputStream = conn.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, charset);
             BufferedReader br = new BufferedReader(inputStreamReader);
 
             String jsonReturn = br.readLine();

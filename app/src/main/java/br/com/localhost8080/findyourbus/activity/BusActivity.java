@@ -3,8 +3,6 @@ package br.com.localhost8080.findyourbus.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,7 +14,7 @@ import java.util.concurrent.ExecutionException;
 
 import br.com.localhost8080.findyourbus.R;
 import br.com.localhost8080.findyourbus.dto.BusDTO;
-import br.com.localhost8080.findyourbus.service.BusListService;
+import br.com.localhost8080.findyourbus.task.BusTask;
 
 public class BusActivity extends AppCompatActivity {
 
@@ -38,7 +36,7 @@ public class BusActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.list_bus);
 
         try {
-            this.busList = new BusListService().execute().get();
+            this.busList = new BusTask().execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -63,17 +61,6 @@ public class BusActivity extends AppCompatActivity {
         });
     }
 
-    private void updateListView(String param) {
-        try {
-            this.busList.clear();
-            this.busList.addAll(new BusListService().execute(param).get());
-            this.busListAdapter.notifyDataSetChanged();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     public void search(View view) {
@@ -82,31 +69,21 @@ public class BusActivity extends AppCompatActivity {
         this.updateListView(param);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    private void updateListView(String param) {
+        try {
+            this.busList.clear();
+            this.busList.addAll(new BusTask().execute(param).get());
+            this.busListAdapter.notifyDataSetChanged();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /**
      * Workaround to pass the instance of Activity to the Intent
-     * TODO: find a better way to get the instance or use another way to create the Intent
+     * TODO: research how is the most common way to get the instance
      */
     private BusActivity getActivityInstanceForIntents() {
         return this;
